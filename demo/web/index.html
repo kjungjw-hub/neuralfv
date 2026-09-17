@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>neuralfv — Neural Flux-Conservative PDE Solver Demo</title>
+<meta name="description" content="A conservation-preserving neural network solver races classical finite-volume schemes on shock-forming PDEs." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Neural Flux-Conservative PDE Solver</h1>
+    <p class="subtitle">
+      A convolutional network predicts fluxes at cell interfaces instead of the next state directly,
+      so mass conservation is exact by construction. Trained with multi-step rollout + noise injection,
+      it takes several times the classically CFL-limited timestep while staying competitive with
+      high-order finite-volume solvers on accuracy per unit of wall-clock cost.
+      See the <a href="../../README.md">repo</a> and <a href="../report/report.md">write-up</a> for details.
+    </p>
+  </header>
+
+  <div class="card">
+    <div class="controls">
+      <select id="scenario-select"></select>
+      <button id="play-button">▶ Play</button>
+      <input id="time-slider" type="range" min="0" value="0" />
+      <span id="time-readout" class="time-readout">t = 0.00</span>
+    </div>
+    <svg id="solution-chart" viewBox="0 0 820 420"></svg>
+    <div class="legend" id="solution-legend"></div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead><tr><th>Solver</th><th>Rel. L2 error at final time</th></tr></thead>
+      <tbody id="error-table"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <svg id="pareto-chart" viewBox="0 0 820 380"></svg>
+  </div>
+
+  <footer>
+    Trajectories are precomputed offline (see <code>demo/export_demo_payloads.py</code>) so every number
+    here exactly matches the README/write-up — no PyTorch runtime is loaded in this page.
+  </footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

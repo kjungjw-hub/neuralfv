@@ -1,0 +1,34 @@
+# Linear advection: pipeline sanity-check config (trivial exact solution).
+pde: advection
+advection_speed: 1.0
+domain_length: 6.283185307179586  # 2*pi
+
+n_coarse: 64
+downsample_ratio: 8
+fine_cfl: 0.4
+n_fourier_modes: 6
+
+dt_large: 0.2        # ~4x the coarse grid's own CFL-limited step (cfl=0.5)
+n_large_steps: 20
+
+n_train_trajectories: 200
+n_val_trajectories: 40
+seed_train: 0
+seed_val: 1
+torch_seed: 0
+
+model:
+  stencil_half_width: 3
+  hidden_channels: 32
+
+training:
+  batch_size: 32
+  epochs: 40
+  lr: 0.001
+  rollout_length_final: 8
+  rollout_curriculum_epochs: 4
+  noise_std: 0.01
+
+output:
+  checkpoint: outputs/advection_cfn.pt
+  log: outputs/advection_cfn_log.json

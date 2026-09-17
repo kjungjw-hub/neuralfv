@@ -1,0 +1,33 @@
+# Inviscid Burgers' equation (shock-forming): the resume-critical benchmark.
+pde: burgers
+domain_length: 6.283185307179586  # 2*pi
+
+n_coarse: 64
+downsample_ratio: 8
+fine_cfl: 0.4
+n_fourier_modes: 4  # fewer, lower modes -> cleaner single-shock formation
+
+dt_large: 0.08       # ~4x the coarse grid's own CFL-limited step near typical amplitudes
+n_large_steps: 15
+
+n_train_trajectories: 320
+n_val_trajectories: 64
+seed_train: 10
+seed_val: 11
+torch_seed: 0
+
+model:
+  stencil_half_width: 3
+  hidden_channels: 32
+
+training:
+  batch_size: 32
+  epochs: 80
+  lr: 0.001
+  rollout_length_final: 8
+  rollout_curriculum_epochs: 6
+  noise_std: 0.02
+
+output:
+  checkpoint: outputs/burgers_cfn.pt
+  log: outputs/burgers_cfn_log.json
